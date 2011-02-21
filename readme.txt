@@ -11,7 +11,7 @@ Creates a Snapshot Backup of your entire website and uploads it to an FTP reposi
 
 == Description ==
 
-Creates a Snapshot Backup of your entire website: that’s your Database, current WP Core, all your Themes, Plugins and Uploads. The resulting single archive file is then uploaded to an FTP repository of your choice.
+Creates a Snapshot Backup of your entire website: that's your Database, current WP Core, all your Themes, Plugins and Uploads. The resulting single archive file is then uploaded to an FTP repository of your choice.
 
 == Installation ==
 
@@ -24,9 +24,9 @@ FTP Details are optional - if you don't have an FTP account you can leave the de
 
 == Snapshot Philosophy ==
 
-Archiving dynamic websites isn’t all that easy and we all tend to forget that because the web is such a fluid thing. The idea of Snapshot is that you may want to create an “as is” version of your website for archive purposes. With each click you’ll create a “time capsule” of sorts – this could be for legal, sentimental or security reasons.
+Archiving dynamic websites isn't all that easy and we all tend to forget that because the web is such a fluid thing. The idea of Snapshot is that you may want to create an "as is" version of your website for archive purposes. With each click you'll create a "time capsule" of sorts - this could be for legal, sentimental or security reasons.
 
-Other solutions mirror your or snyc your installation – which is a great idea too, however if you only notice a week down the line that your site has been compromised then your synced copy most certainly is too. Snapshot makes it easy to go back to a clean version from x days/weeks/months ago.
+Other solutions mirror your or snyc your installation which is a great idea too, however if you only notice a week down the line that your site has been compromised then your synced copy most certainly is too. Snapshot makes it easy to go back to a clean version from x days/weeks/months ago.
 
 == Upgrade Notice ==
 
