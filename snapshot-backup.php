@@ -2,7 +2,7 @@
 /*
 Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
-Description: Backs up your ENTIRE Wordpres site and sends it to an FTP archive. Excellent!
+Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
 Version: 1.1
 Author URI: http://wpguru.co.uk
