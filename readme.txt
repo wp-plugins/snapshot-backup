@@ -5,13 +5,13 @@ Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check
 Requires at least: 2.7
 Tested up to: 3.0.5
-Stable tag: 1.0
+Stable tag: 1.1
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
 == Description ==
 
-Creates a Snapshot Backup of your entire website: that’s your Database, current WP Core, all your Themes, Plugins and Uploads. The resulting single archive file is then uploaded to an FTP repository of your choice.
+Creates a Snapshot Backup of your entire website: that's your Database, current WP Core, all your Themes, Plugins and Uploads. The resulting single archive file is then uploaded to an FTP repository of your choice.
 
 == Installation ==
 
@@ -24,19 +24,19 @@ FTP Details are optional - if you don't have an FTP account you can leave the de
 
 == Snapshot Philosophy ==
 
-Archiving dynamic websites isn’t all that easy and we all tend to forget that because the web is such a fluid thing. The idea of Snapshot is that you may want to create an “as is” version of your website for archive purposes. With each click you’ll create a “time capsule” of sorts – this could be for legal, sentimental or security reasons.
+Archiving dynamic websites isn't all that easy and we all tend to forget that because the web is such a fluid thing. The idea of Snapshot is that you may want to create an 'as is' version of your website for archive purposes. With each click you'll create a *time capsule* of sorts - this could be for legal, sentimental or security reasons.
 
-Other solutions mirror your or snyc your installation – which is a great idea too, however if you only notice a week down the line that your site has been compromised then your synced copy most certainly is too. Snapshot makes it easy to go back to a clean version from x days/weeks/months ago.
+Other solutions mirror your or snyc your installation. This is a great idea too, however if you only notice a week down the line that your site has been compromised then your synced copy most certainly is too. Snapshot makes it easy to go back to a clean version from x days/weeks/months ago.
 
 == Upgrade Notice ==
 
-Since this is the first release there's nothing to upgrade yet ;-)
+If you're upgrading from Version 1.0, please note that the databsae temp files were accidentally daved in your WP root directory. Have a look for rougue .sql files there - feel free to delete them.
 
 == Frequently Asked Questions ==
 
 = What's required server side for this plugin to run? =
 
-Since I'm using shell commands to count the files you're using in your current directory, this Plugin only works on Linux servers - NOT on Windows servers.
+Since I'm using shell commands to create the archive file, this Plugin only works on Linux servers - NOT on Windows servers.
 
 = Does this Plugin run on Windows Servers? =
 
@@ -44,17 +44,20 @@ I'm afraid not - you have to be on a Linux server for this to work. I've develop
 
 = When I hit "Create Snapshot Backup" my screen goes blank, but the Wordpress sidebar and header are still here. Is that normal? = 
 
-Yes it is - I haven't implemented a more elegant solution just yet but I'm working on it. While the script is active, your browser should appear to be "loading" though
-and you will receive message reading "All done - thank you" in a yellow box. 
+This happens on Firefox browsers. This is indeed normal - I haven't implemented a more elegant solution just yet but I'm working on it. While the script is active, your browser should appear to be "loading" though and you will receive message reading "All done - thank you" in a yellow box. Internet Explorer appears to be "busy" loading a page - again I'll look at this for future releases.
 
 = I don't have another FTP account. Can I still use this plugin? =
 
 Absolutely - there's a handy download link at the end of the backup procedure so you can save your file locally.
 Simply ignore all error messages relating to FTP uploads.
 
+= Can I do these backups automatically, say via a Cron Job or WP Cron? =
+
+Not at the moment, but it's very high on my priority list to implement this feature.
+
 = How to I restore a snapshot? =
 
-Please follow the detailed instructions on the Snapshot Backup home page.
+I am about to release an article on the Snapshot Backup homepage - it'll be available shortly.
 
 == Screenshots ==
 
@@ -63,6 +66,9 @@ Please follow the detailed instructions on the Snapshot Backup home page.
 3. Success Screen: if you see this then your backup was successful.
 
 == Changelog ==
+
+= 1.1 =
+Fixed a nasty bug which saved the database temp file in the wrong place. 
 
 = 1.0 =
 

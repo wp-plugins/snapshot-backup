@@ -70,9 +70,12 @@ function backup_tables($filetime,$host,$user,$pass,$name,$tables = '*')
 $dbfilename = 'snapshot-db-'.$filetime.'.sql';
 // echo "<br>The actual filename is $dbfilename";
 
-chdir('../wp-content/uploads/');
+echo getcwd();
+chdir('/wp-content/uploads/');
+echo getcwd();
+$dbfilepath = 'wp-content/uploads/'.$dbfilename;
 
-$handle = fopen($dbfilename,'w+');
+$handle = fopen($dbfilepath,'w+');
 fwrite($handle,$return);
 fclose($handle);
 }

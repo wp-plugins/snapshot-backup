@@ -15,7 +15,7 @@ update_option('snapshot_latest', $filename);
 $output = exec("tar -cvf $savepath$filename *");  
 
 // delete database file
-$output = exec("rm snapshot-sb-*.sql");
+$output = exec("rm wp-content/uploads/snapshot-db-*.sql");
 
 // echo "<br>Done!";
 ?>
