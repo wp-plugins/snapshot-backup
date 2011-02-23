@@ -4,8 +4,8 @@ Contributors: versluis
 Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check
 Requires at least: 2.7
-Tested up to: 3.0.5
-Stable tag: 1.1
+Tested up to: 3.1
+Stable tag: 1.2
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
@@ -57,7 +57,14 @@ Not at the moment, but it's very high on my priority list to implement this feat
 
 = How to I restore a snapshot? =
 
-I am about to release an article on the Snapshot Backup homepage - it'll be available shortly.
+I'm aiming to build this option into the plugin and add a standalone script which will do the hard work for you. For now you'll need to do this manually.
+
+In a nutshell: 
+Download the TAR archive from your repository, unTAR it using your favourite ZIPping tool and upload the contents back into your web hosting directory (overwriting any existing files). You'll also find a .SQL file under wp-content/uploads. That's your database file which needs to be uploaded to your MySQL server (say via phpMyAdmin or BigDump), replacing any existing tables in said database.
+
+If on this occasion you're restoring a snapshot to another domain or subfolder in your existing domain, you will also have to change certain values in your database. We'll leave this for another time - search for Moving Wordpress for detailed instructions on how to do this.
+
+I am about to release an article a more in-depth article on the Snapshot Backup homepage - it'll be available shortly. 
 
 == Screenshots ==
 
@@ -67,9 +74,13 @@ I am about to release an article on the Snapshot Backup homepage - it'll be avai
 
 == Changelog ==
 
+= 1.2 =
+Certified compatibility with Wordpress 3.1.
+Password was visible in FTP settings form - it's fixed now.
+
 = 1.1 =
 Fixed a nasty bug which saved the database temp file in the wrong place. 
 
 = 1.0 =
 
-1. Initial Release
+Initial Release
