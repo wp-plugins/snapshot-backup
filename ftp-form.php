@@ -4,15 +4,15 @@
     // If they did, this hidden field will be set to 'Y'
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' ) {
         // Read their posted value
-        $opt_val = $_POST[ $data_field_name ];
-        $opt_val2 = $_POST[ $data_field_name2 ];
-	$opt_val3 = $_POST[ $data_field_name3 ];
-        $opt_val4 = $_POST[ $data_field_name4 ];
-	$opt_val5 = $_POST[ $data_field_name5 ];
+    $opt_val = trim($_POST[ $data_field_name ]);
+    $opt_val2 = trim($_POST[ $data_field_name2 ]);
+	$opt_val3 = trim($_POST[ $data_field_name3 ]);
+    $opt_val4 = trim($_POST[ $data_field_name4 ]);
+	$opt_val5 = trim($_POST[ $data_field_name5 ]);
         
 	// Save the posted value in the database
-        update_option( $opt_name, $opt_val );
-        update_option( $opt_name2, $opt_val2 );
+    update_option( $opt_name, $opt_val );
+    update_option( $opt_name2, $opt_val2 );
 	update_option( $opt_name3, $opt_val3 );
 	update_option( $opt_name4, $opt_val4 );
 	update_option( $opt_name5, $opt_val5 );
@@ -49,13 +49,12 @@
     <td><input type="text" name="<?php echo $data_field_name4; ?>" value="<?php echo $opt_val4; ?>" size="25"></td>
     <td><em>e.g. /httpdocs/backups or leave blank</em> </td>
   </tr>
-<!--
+
   <tr>
     <td>Snapshot Prefix: </td>
     <td><input type="text" name="<?php echo $data_field_name5; ?>" value="<?php echo $opt_val5; ?>" size="25"></td>
-    <td><em>filename is prefix-snapshot-date.time.tar</em></td>
+    <td><em>filename is prefix-snapshot-date-time.tar</em></td>
   </tr>
--->
 </table>
 <p class="submit"><input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
   <br />

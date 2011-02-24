@@ -2,7 +2,7 @@
 
 Contributors: versluis
 Donate link: http://wpguru.co.uk/say-thanks/
-Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check
+Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
 Tested up to: 3.1
 Stable tag: 1.2
@@ -12,6 +12,10 @@ Creates a Snapshot Backup of your entire website and uploads it to an FTP reposi
 == Description ==
 
 Creates a Snapshot Backup of your entire website: that's your Database, current WP Core, all your Themes, Plugins and Uploads. The resulting single archive file is then uploaded to an FTP repository of your choice.
+
+You can use one FTP repository for snapshots from various sites and group them using File Prefixes and Subdirectories to tell your snapshots apart.
+
+If you don't have an FTP account you can download the file from your local server at the end of the backup.
 
 == Installation ==
 
@@ -73,6 +77,11 @@ I am about to release an article a more in-depth article on the Snapshot Backup 
 3. Success Screen: if you see this then your backup was successful.
 
 == Changelog ==
+
+= 1.3 =
+Added File Prefix option; if you have one FTP repository you can use it for multiple sites easily
+Added File Size Display so you know how big your snapshot is
+Eliminated whitespace on user input fields
 
 = 1.2 =
 Certified compatibility with Wordpress 3.1.
