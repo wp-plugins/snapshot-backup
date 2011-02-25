@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 1.2
+Version: 1.3
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 1.2.0 as of 23/02/2011
+This is Version 1.3.0 as of 24/02/2011
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
