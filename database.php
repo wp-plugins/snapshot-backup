@@ -13,7 +13,7 @@ Superb Script by David B Walsh - check it out:
 http://davidwalsh.name/backup-mysql-database-php
 */
 
-backup_tables($filetime,'DB_HOST','DB_USER','DB_PASSWORD','DB_NAME');
+backup_tables($filetime,DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 
 /* backup the db OR just a table */
 function backup_tables($filetime,$host,$user,$pass,$name,$tables = '*')
@@ -70,9 +70,12 @@ function backup_tables($filetime,$host,$user,$pass,$name,$tables = '*')
 $dbfilename = 'snapshot-db-'.$filetime.'.sql';
 // echo "<br>The actual filename is $dbfilename";
 
-chdir('../wp-content/uploads/');
+// echo getcwd();
+// chdir('/wp-content/uploads/');
+// echo getcwd();
+$dbfilepath = 'wp-content/uploads/'.$dbfilename;
 
-$handle = fopen($dbfilename,'w+');
+$handle = fopen($dbfilepath,'w+');
 fwrite($handle,$return);
 fclose($handle);
 }

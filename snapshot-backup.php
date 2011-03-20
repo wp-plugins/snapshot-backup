@@ -2,15 +2,15 @@
 /*
 Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
-Description: Backs up your ENTIRE Wordpres site and sends it to an FTP archive. Excellent!
+Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 1.0
+Version: 1.4
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 1.0.5 as of 21/02/2011
+This is Version 1.4.0 as of 20/03/2011
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -52,6 +52,7 @@ function snapshot() {
     $opt_name2 = 'snapshot_ftp_user';
     $opt_name3 = 'snapshot_ftp_pass';
     $opt_name4 = 'snapshot_ftp_subdir';
+	$opt_name5 = 'snapshot_ftp_prefix';
     $hidden_field_name = 'snapshot_ftp_hidden';
     $hidden_field_name2 = 'snapshot_backup_hidden';
     $hidden_field_name3 = 'snapshot_check_repo';
@@ -59,12 +60,14 @@ function snapshot() {
     $data_field_name2 = 'snapshot_ftp_user';
     $data_field_name3 = 'snapshot_ftp_pass';
     $data_field_name4 = 'snapshot_ftp_subdir';
+	$data_field_name5 = 'snapshot_ftp_prefix';
 
     // Read in existing option value from database
     $opt_val = get_option( $opt_name );
     $opt_val2 = get_option ($opt_name2 );
     $opt_val3 = get_option ($opt_name3 );
     $opt_val4 = get_option ($opt_name4 );
+	$opt_val5 = get_option ($opt_name5 );
 
 
     // reset working directory to WP root
@@ -77,13 +80,12 @@ function snapshot() {
 ?>
 <div class="wrap">
 <h2><img src="/wp-content/plugins/snapshot-backup/WP-Guru-Logo.png">&nbsp;Welcome to Snapshot Backup!</h2>
-
 <table class="snapshot-backup" width=600 cellspacing=10 bgcolor=red>
 <tr><td>
 <p><strong>With this plugin you can create an up-to-the-minute archive of your entire website and save it to an offsite location via FTP.</strong></p>
 <p>Things couldn't be easier: </p>
 <ul><li>&nbsp;&nbsp;&bull; enter your FTP details at the bottom</li>
-<li>&nbsp;&nbsp;&bull; click on CREATE SNAPSHOT</li>
+<li>&nbsp;&nbsp;&bull; click on CREATE NEW SNAPSHOT</li>
 <li>&nbsp;&nbsp;&bull; rest assured you've backed your database AND contents with just one single click</li></ul>
 <p>If you don't have an FTP account you can <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">sign up for one here</a> or download your snapshot from this server once it's done.</p>
 </td></tr>
@@ -119,7 +121,7 @@ echo '<div class="updated"><h2>All done - thank you!</h2>';
 <form name="form2" method="post" action="">
 <input type="hidden" name="<?php echo $hidden_field_name2; ?>" value="Y">
 <p class="submit">
-<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Create Snapshot Backup') ?>" />
+<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Create New Snapshot') ?>" />
 </p>
 </form>
 <hr />
@@ -133,10 +135,11 @@ include 'wp-content/plugins/snapshot-backup/ftp-form.php';
 // footer
 ?>
 <hr />
+<p><strong>Coming soon: automated backups, repository browser, snapshot restore option. Watch this space! </strong></p>
 <p>This plugin was brought to you by<br />
-<a href="http://wpguru.co.uk" target="_blank"><img src="/wp-content/plugins/snapshot-backup/guru-header.jpg"></a>
+  <a href="http://wpguru.co.uk" target="_blank"><img src="/wp-content/plugins/snapshot-backup/guru-header.jpg"></a>
 </p>
-<p><a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Plugin Home Page</a> | <a href="http://davidwalsh.name/backup-mysql-database-php" target="_blank">Database Script by the amazing David Walsh</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
+<p><a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Plugin Home Page</a> | <a href="http://plugins.trac.wordpress.org/log/snapshot-backup/" target="_Blank">Changelog</a> | <a href="http://davidwalsh.name/backup-mysql-database-php" target="_blank">Database Script by the amazing David Walsh</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
 
 <?php
 }
