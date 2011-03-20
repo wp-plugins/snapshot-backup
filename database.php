@@ -13,7 +13,7 @@ Superb Script by David B Walsh - check it out:
 http://davidwalsh.name/backup-mysql-database-php
 */
 
-backup_tables($filetime,'DB_HOST','DB_USER','DB_PASSWORD','DB_NAME');
+backup_tables($filetime,DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 
 /* backup the db OR just a table */
 function backup_tables($filetime,$host,$user,$pass,$name,$tables = '*')

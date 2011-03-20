@@ -1,6 +1,6 @@
 <?php
 echo "<h2>Archving your website</h2>";
-
+echo "This could take another moment...<br />";
 $savepath = 'wp-content/uploads/';
 
 // delete previous backups
