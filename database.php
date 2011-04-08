@@ -9,75 +9,24 @@ echo 'This could take a moment...<br>';
 $dbsnapshotfile = 'snapshot-db-'.date('Ymd-Gi').'.sql';
 
 /*********************************************
-Superb Script by David B Walsh - check it out:
+I'm retiring the previous scrip in this place
+due to incompatibilities with certain servers.
+
+The Script by David B Walsh - is still online here:
 http://davidwalsh.name/backup-mysql-database-php
 */
 
-backup_tables($filetime,'DB_HOST','DB_USER','DB_PASSWORD','DB_NAME');
-
-/* backup the db OR just a table */
-function backup_tables($filetime,$host,$user,$pass,$name,$tables = '*')
-{
-	
-	$link = mysql_connect($host,$user,$pass);
-	mysql_select_db($name,$link);
-	
-	//get all of the tables
-	if($tables == '*')
-	{
-		$tables = array();
-		$result = mysql_query('SHOW TABLES');
-		while($row = mysql_fetch_row($result))
-		{
-			$tables[] = $row[0];
-		}
-	}
-	else
-	{
-		$tables = is_array($tables) ? $tables : explode(',',$tables);
-	}
-	
-	//cycle through
-	foreach($tables as $table)
-	{
-		$result = mysql_query('SELECT * FROM '.$table);
-		$num_fields = mysql_num_fields($result);
-		
-		$return.= 'DROP TABLE '.$table.';';
-		$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
-		$return.= "\n\n".$row2[1].";\n\n";
-		
-		for ($i = 0; $i < $num_fields; $i++) 
-		{
-			while($row = mysql_fetch_row($result))
-			{
-				$return.= 'INSERT INTO '.$table.' VALUES(';
-				for($j=0; $j<$num_fields; $j++) 
-				{
-					$row[$j] = addslashes($row[$j]);
-					$row[$j] = ereg_replace("\n","\\n",$row[$j]);
-					if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
-					if ($j<($num_fields-1)) { $return.= ','; }
-				}
-				$return.= ");\n";
-			}
-		}
-		$return.="\n\n\n";
-	}
-	
-	//save file
-// echo "<br>The Filetime is $filetime ";
+/* Database Readout via mysqldump
+** @since 1.5
+*/
 $dbfilename = 'snapshot-db-'.$filetime.'.sql';
-// echo "<br>The actual filename is $dbfilename";
+$dbfilepath = WP_CONTENT_DIR .'/uploads/'.$dbfilename;
+$dumpstring = 'mysqldump -h '.DB_HOST.' -u '. DB_USER .' -p'. DB_PASSWORD .' '. DB_NAME .' > '. $dbfilepath;
+// echo '<br>'.$dbfilepath.'<br>'.$dumpstring.'<br>';
 
-chdir('../wp-content/uploads/');
+$output = shell_exec($dumpstring);
+// echo "<pre>$output</pre>";
+// echo 'End of Database thing<br>';
 
-$handle = fopen($dbfilename,'w+');
-fwrite($handle,$return);
-fclose($handle);
-}
-// end of David's script
-// *********************************************
-
-// echo '<br>Done!';
+echo 'Done!';
 ?>
