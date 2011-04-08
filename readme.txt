@@ -4,8 +4,8 @@ Contributors: versluis
 Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
-Tested up to: 3.1
-Stable tag: 1.4
+Tested up to: 3.1.1
+Stable tag: 1.5
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
@@ -77,6 +77,14 @@ I am about to release an article a more in-depth article on the Snapshot Backup 
 3. Success Screen: if you see this then your backup was successful.
 
 == Changelog ==
+
+= 1.5 =
+Fixed incompatibilities with certain servers in the database readout:
+Some users experienced PHP Memory issues, others could not restore the database.
+Certified Wordpress 3.1.1 compatibility
+Replaced hard-coded paths with dynamic ones
+Added permanent download option for most recent Snapshot
+Added option to include additional directory - useful for people who have moved wp-content
 
 = 1.4 =
 Fixed spurious error message upon database readout

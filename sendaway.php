@@ -7,7 +7,7 @@ $user = get_option('snapshot_ftp_user');
 $pass = get_option('snapshot_ftp_pass');
 $subdir = get_option('snapshot_ftp_subdir');
 $remotefile = $subdir.'/'.$filename;
-$localfile = 'wp-content/uploads/' . $filename;
+$localfile = WP_CONTENT_DIR .'/uploads/' . $filename;
 
 // connect to host
 $conn = ftp_connect($host);
@@ -35,7 +35,7 @@ echo 'Uploading package to FTP repository...<br />';
 // $fp = fopen ($localfile, 'r');
 if (!$success = ftp_put($conn, $remotefile, $localfile, FTP_BINARY))
 {
-  echo 'Error: Could not upload file. This will be local backup.';
+  echo 'Error: Could not upload file. This will be local backup.<br />';
   ftp_quit($conn);
   // exit;
 }
@@ -49,7 +49,7 @@ if (!$success = ftp_put($conn, $remotefile, $localfile, FTP_BINARY))
 // echo "$filename <br>";
 
 fclose($fp);
-echo 'File uploaded successfully';
+echo 'File was uploaded successfully <br />';
 
 // close connection to host
 ftp_quit($conn);
