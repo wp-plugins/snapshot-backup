@@ -79,6 +79,7 @@ I am about to release an article a more in-depth article on the Snapshot Backup 
 == Changelog ==
 
 = 1.5 =
+
 Fixed incompatibilities with certain servers in the database readout:
 Some users experienced PHP Memory issues, others could not restore the database.
 Certified Wordpress 3.1.1 compatibility
@@ -87,18 +88,22 @@ Added permanent download option for most recent Snapshot
 Added option to include additional directory - useful for people who have moved wp-content
 
 = 1.4 =
+
 Fixed spurious error message upon database readout
 
 = 1.3 =
+
 Added File Prefix option; if you have one FTP repository you can use it for multiple sites easily
 Added File Size Display so you know how big your snapshot is
 Eliminated whitespace on user input fields
 
 = 1.2 =
+
 Certified compatibility with Wordpress 3.1.
 Password was visible in FTP settings form - it's fixed now.
 
 = 1.1 =
+
 Fixed a nasty bug which saved the database temp file in the wrong place. 
 
 = 1.0 =
