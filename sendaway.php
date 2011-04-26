@@ -48,7 +48,7 @@ if (!$success = ftp_put($conn, $remotefile, $localfile, FTP_BINARY))
 // foreach ($listing as $filename)
 // echo "$filename <br>";
 
-fclose($fp);
+fclose($conn);
 echo 'File was uploaded successfully <br />';
 
 // close connection to host
