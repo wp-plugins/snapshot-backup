@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 1.5.1
+Version: 1.6
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 1.5.1 as of 08/04/2011
+This is Version 1.6.2 as of 18/05/2011
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -77,6 +77,19 @@ function snapshot() {
     // chdir('../');
 	chdir (ABSPATH);
 	
+	// @since 1.6
+	// let's include some subroutines - doesn't work yet
+// include plugin_dir_path(__FILE__).'includes/test-ftp.php';
+	
+	// create footer
+    function snapshot_footer(){
+    ?>
+    <p><strong>Coming soon: automated backups, repository browser, snapshot restore option. Watch this space! </strong></p>
+    <p>This plugin was brought to you by<br />
+    <a href="http://wpguru.co.uk" target="_blank"><?php echo '<img src="'. plugins_url('images/guru-header.jpg', __FILE__) .'">'; ?></a></p>
+    <p>Snapshot Backup Version 1.6 | <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Plugin Home Page</a>  | <a href="http://plugins.trac.wordpress.org/log/snapshot-backup/" target="_Blank">Changelog</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
+    <?php }
+	
 /* 
  * @since 1.5
  * ADDITIONAL BACKUP SETTINGS
@@ -128,7 +141,7 @@ function snapshot() {
 // Header
 ?>
 <div class="wrap">
-<h2><?php echo '<img src="'. plugins_url('WP-Guru-Logo.png', __FILE__) .'">'; ?>&nbsp;Welcome to Snapshot Backup!</h2>
+<h2><?php echo '<img src="'. plugins_url('images/WP-Guru-Logo.png', __FILE__) .'">'; ?>&nbsp;Welcome to Snapshot Backup!</h2>
 <table class="snapshot-backup" width=600 cellspacing=10 bgcolor=red>
 <tr><td>
 <p><strong>With this plugin you can create an up-to-the-minute archive of your entire website and save it to an offsite location via FTP.</strong></p>
@@ -148,22 +161,22 @@ function snapshot() {
  * @since 1.0
  * MAIN SNAPSHOT BUTTON
  */
-// this could take a while...
 // set the number of seconds you'd like to wait for the script here
-// default is 300
+// default is 300 
 set_time_limit(300);
 
 // create global file name
 $filetime = date('Ymd-Gi');
-// echo "<br>The Filetime is $filetime <br>";
+// call pre-flight checklist
+include plugin_dir_path(__FILE__).'includes/preflight.php';
 // readout the Database
-include plugin_dir_path(__FILE__).'database.php';
+include plugin_dir_path(__FILE__).'includes/database.php';
 // create ZIP package
-include plugin_dir_path(__FILE__).'zipshot.php';
+include plugin_dir_path(__FILE__).'includes/zipshot.php';
 // send package to FTP
-include plugin_dir_path(__FILE__).'sendaway.php';
+include plugin_dir_path(__FILE__).'includes/sendaway.php';
 // we're done
-echo '<div class="updated"><h2>All done - thank you!</h2>';
+echo '<div class="updated"><h2>All done - thank you for using Snapshot Backup!</h2>';
 ?>
 </div>
 <?php
@@ -182,22 +195,17 @@ echo '<div class="updated"><h2>All done - thank you!</h2>';
 <?php
 // call Recent Download option
 if (get_option('snapshot_latest')){
-include plugin_dir_path(__FILE__).'download-recent.php';
+include plugin_dir_path(__FILE__).'includes/download-recent.php';
 }
 // call FTP Details form
-include plugin_dir_path(__FILE__).'ftp-form.php';
+include plugin_dir_path(__FILE__).'includes/ftp-form.php';
 
 // call Backup Settings
-include plugin_dir_path(__FILE__).'settings.php';
+include plugin_dir_path(__FILE__).'includes/settings.php';
 
-// footer
-?>
+// call footer
+snapshot_footer();
 
-<p><strong>Coming soon: automated backups, repository browser, snapshot restore option. Watch this space! </strong></p>
-<p>This plugin was brought to you by<br />
-  <a href="http://wpguru.co.uk" target="_blank"><?php echo '<img src="'. plugins_url('guru-header.jpg', __FILE__) .'">'; ?></a>
-</p>
-<p>Snapshot Backup Version 1.5 | <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Plugin Home Page</a>  | <a href="http://plugins.trac.wordpress.org/log/snapshot-backup/" target="_Blank">Changelog</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
-
-<?php
+// end of Plugin
 }
+?>
