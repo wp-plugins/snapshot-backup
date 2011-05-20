@@ -17,14 +17,14 @@ $conn = ftp_connect($host);
 // thanks to Kara for this code ;-)
 
 if (!$conn) {
-  echo 'Error: Could not connect to ftp server. This will be local backup.<br />';
+  echo 'Could not connect to ftp server. This will be local backup.<br />';
 }
 else {
 echo "Connected to $host.<br />";
 // log in to host
 $result = @ftp_login($conn, $user, $pass);
 if (!$result) {
- echo "Error: Could not log on as $user. This will be local backup.<br />";
+ echo "Could not log on as $user. This will be local backup.<br />";
 }
 else {
 echo "Logged in as $user<br />";
