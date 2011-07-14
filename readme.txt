@@ -4,8 +4,8 @@ Contributors: versluis
 Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
-Tested up to: 3.2
-Stable tag: 1.6.1
+Tested up to: 3.2.1
+Stable tag: 2.0
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
@@ -38,6 +38,14 @@ If you're upgrading from Version 1.0, please note that the databsae temp files w
 
 == Frequently Asked Questions ==
 
+= When I change automation setting, the site seems to be unresponsive (though the browser appears to be doing stuff). =
+
+I know, the plugin is eager to create the first automated backup right there and then. It just means WordPress is busy executing the script. It's the same phenomenon that happens when you create a manual Snapshot. Give it a minute and the site will come back to life. 
+
+= When I hit "Create Snapshot Backup" my screen goes blank, but the Wordpress sidebar and header are still here. Is that normal? = 
+
+This happens on older Firefox browsers, since Firefox 5 I haven't seen this problem anymore. While the script is active, your browser should appear to be "loading" and you will receive messages  like "All done - thank you" in a yellow box. Internet Explorer appears to be "busy" loading a page - they all behave slightly differently. Leave the script running and the site will come back to life.
+
 = What's required server side for this plugin to run? =
 
 Since I'm using shell commands to create the archive file, this Plugin only works on Linux servers - NOT on Windows servers.
@@ -46,10 +54,6 @@ Since I'm using shell commands to create the archive file, this Plugin only work
 
 I'm afraid not - you have to be on a Linux server for this to work. I've developed and tested it on CentOS / RHEL.
 
-= When I hit "Create Snapshot Backup" my screen goes blank, but the Wordpress sidebar and header are still here. Is that normal? = 
-
-This happens on Firefox browsers. This is indeed normal - I haven't implemented a more elegant solution just yet but I'm working on it. While the script is active, your browser should appear to be "loading" though and you will receive message reading "All done - thank you" in a yellow box. Internet Explorer appears to be "busy" loading a page - again I'll look at this for future releases.
-
 = I don't have another FTP account. Can I still use this plugin? =
 
 Absolutely - there's a handy download link at the end of the backup procedure so you can save your file locally.
@@ -57,18 +61,21 @@ Simply ignore all error messages relating to FTP uploads.
 
 = Can I do these backups automatically, say via a Cron Job or WP Cron? =
 
-Not at the moment, but it's very high on my priority list to implement this feature.
+Yes you can! Since Version 2.0 of the plugin you can create regular automatic backups under Snapshot Backup - Automation.
+
+Please note that this feature relies on the WP Cron function, which means you need traffic to 
 
 = How to I restore a snapshot? =
 
-I'm aiming to build this option into the plugin and add a standalone script which will do the hard work for you. For now you'll need to do this manually.
+I'm working on an elegant solution for this, but for now you'll need to do this manually.
 
 In a nutshell: 
-Download the TAR archive from your repository, unTAR it using your favourite ZIPping tool and upload the contents back into your web hosting directory (overwriting any existing files). You'll also find a .SQL file under wp-content/uploads. That's your database file which needs to be uploaded to your MySQL server (say via phpMyAdmin or BigDump), replacing any existing tables in said database.
+Download the TAR archive from your repository, unTAR it using your favourite ZIPping tool and upload the contents back into your web hosting directory (overwriting any existing files). You'll also find an .SQL file under wp-content/uploads. That's your database file which needs to be uploaded to your MySQL server (say via phpMyAdmin or BigDump), replacing any existing tables in said database.
 
 If on this occasion you're restoring a snapshot to another domain or subfolder in your existing domain, you will also have to change certain values in your database. We'll leave this for another time - search for Moving Wordpress for detailed instructions on how to do this.
 
-I am about to release an article a more in-depth article on the Snapshot Backup homepage - it'll be available shortly. 
+There's a handy article on my website which explains this in more detail: 
+http://wpguru.co.uk/2011/04/how-to-restore-your-snapsnot-via-ftp/
 
 == Screenshots ==
 
@@ -77,6 +84,12 @@ I am about to release an article a more in-depth article on the Snapshot Backup 
 3. Success Screen: if you see this then your backup was successful.
 
 == Changelog ==
+
+= 2.0 =
+New Menu Structure
+Added Autiomation
+Added Auto Delete function for rolling backups
+Added Manage Snapshots feature to display a list of your Snapshots
 
 = 1.6.1 =
 
