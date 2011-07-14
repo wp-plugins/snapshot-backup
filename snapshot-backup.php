@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 1.6.1
+Version: 2.0
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 1.6.1.0 as of 20/05/2011
+This is Version 2.0 as of 01/07/2011
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -28,18 +28,91 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
+// ***********************
+// AUTOMATION HOOK
+// @since 2.0
+// ***********************
+
+add_action('snapshot_automation', 'snapshot_do_cron');
+
+function snapshot_auto_activation() {
+	if ( !wp_next_scheduled( 'snapshot_automation' ) ) {
+		wp_schedule_event(time(), 'snapshot_interval', 'snapshot_automation');
+	}
+}
+
+add_action('wp', 'snapshot_auto_activation');
+
+
+/* setup different schedule */
+
+function snapshot_add_interval( $schedules ) {
+	// add specific schedule to the existing set
+	$schedules['snapshot_interval'] = array(
+		'interval' => get_option ('snapshot_auto_interval'),
+		'display' => __('Snapshot Backup Automation')
+	);
+	return $schedules;
+}
+
+add_filter( 'cron_schedules', 'snapshot_add_interval' );
+
+// ************************************************************
+// SNAPSHOT CRON FUNCTION
+// @since 2.0
+// ************************************************************
+/* This is the function that is executed by the added interval  */
+function snapshot_do_cron() {
+	// grab functions
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+    // check if we're actually suppsed to do something
+    if ( get_option ('snapshot_auto_interval') !== 'never') {
+	do_the_snapshot();
+
+    // call AUTO DELETE FEATURE
+	snapshot_autodelete();
+	
+    // call SEND EMAIL NOTIFICATION
+	if ( get_option('snapshot_auto_email') !=='') {
+		snapshot_sendmail();
+
+	} // end if email
+    } // end if do snapshot
+} // end of function
+
+// ************************************************************
+// END OF AUTOMATION HOOK
+// ************************************************************
+
 // Hook for adding admin menu
+// @since 1.0
 add_action('admin_menu', 'snapshot_admin');
 
 // action function for above hook
 function snapshot_admin() {
 
-// Add a new submenu under DASHBOARD
-add_dashboard_page('Snapshot Backup', 'Snapshot Backup', 'administrator', 'snapshot-admin', 'snapshot');
+// Adding new top-level menu SNAPSHOT BACUP
+// @since 2.0
+add_menu_page('Snapshot Backup', 'Snapshot Backup', 'administrator', 'snapshot', 'snapshot_home');
+// Add a submenu to the custom top-level menu: MANAGE
+add_submenu_page('snapshot', 'Manage Snapshots', 'Manage Snapshots', 'administrator', 'manage-repo', 'snapshot_manage_repo');
+// Add a submenu to the custom top-level menu: FTP DETAILS
+add_submenu_page('snapshot', 'Settings', 'Settings', 'administrator', 'snapshot-ftp-details', 'snapshot_ftp_details');
+// Add a submenu to the custom top-level menu: AUTOMATION
+add_submenu_page('snapshot', 'Automation', 'Automation', 'administrator', 'snapshot-automation', 'snapshot_automation');
+// Add a submenu to the custom top-level menu: HELP
+// add_submenu_page('snapshot', 'Help and Documentation', 'Help and Documentation', 'administrator', 'snapshot-help', 'snapshot_codex');
+// Add a submenu to the custom top-level menu: DEV
+// add_submenu_page('snapshot', 'DEV SECTION', 'DEV SECTION', 'administrator', 'dev-section', 'dev_section');
+}
+
+// Auto populate new option - in case it's empty
+if (!get_option('snapshot_repo_amount')) {
+	update_option('snapshot_repo_amount', '10');
 }
 
 // displays the page content for the admin submenu
-function snapshot() {
+function snapshot_home() {
 
 //must check that the user has the required capability 
     if (!current_user_can('manage_options'))
@@ -54,6 +127,9 @@ function snapshot() {
     $opt_name4 = 'snapshot_ftp_subdir';
 	$opt_name5 = 'snapshot_ftp_prefix';
 	$opt_name6 = 'snapshot_add_dir1';
+	$opt_name7 = 'snapshot_auto_interval';
+	$opt_name8 = 'snapshot_auto_email';
+	
     $hidden_field_name = 'snapshot_ftp_hidden';
     $hidden_field_name2 = 'snapshot_backup_hidden';
     $hidden_field_name3 = 'snapshot_check_repo';
@@ -63,6 +139,8 @@ function snapshot() {
     $data_field_name4 = 'snapshot_ftp_subdir';
 	$data_field_name5 = 'snapshot_ftp_prefix';
 	$data_field_name6 = 'snapshot_add_dir1';
+	$data_field_name7 = 'snapshot_auto_interval';
+	$data_field_name8 = 'snapshot_auto_email';
 
     // Read in existing option value from database
     $opt_val = get_option( $opt_name );
@@ -71,6 +149,8 @@ function snapshot() {
     $opt_val4 = get_option ($opt_name4 );
 	$opt_val5 = get_option ($opt_name5 );
 	$opt_val6 = get_option ($opt_name6 );
+	$opt_val7 = get_option ($opt_name7 );
+	$opt_val8 = get_option ($opt_name8 );
 
 
     // reset working directory to WP root
@@ -80,15 +160,6 @@ function snapshot() {
 	// @since 1.6
 	// let's include some subroutines - doesn't work yet
 // include plugin_dir_path(__FILE__).'includes/test-ftp.php';
-	
-	// create footer
-    function snapshot_footer(){
-    ?>
-    <p><strong>Coming soon: automated backups, repository browser, snapshot restore option. Watch this space! </strong></p>
-    <p>This plugin was brought to you by<br />
-    <a href="http://wpguru.co.uk" target="_blank"><?php echo '<img src="'. plugins_url('images/guru-header.jpg', __FILE__) .'">'; ?></a></p>
-    <p>Snapshot Backup Version 1.6 | <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Plugin Home Page</a>  | <a href="http://plugins.trac.wordpress.org/log/snapshot-backup/" target="_Blank">Changelog</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
-    <?php }
 	
 /* 
  * @since 1.5
@@ -129,19 +200,21 @@ function snapshot() {
 	update_option( $opt_name4, $opt_val4 );
 	update_option( $opt_name5, $opt_val5 );
 
-        // Put a "settings updated" message on the screen
+     // Put a "settings updated" message on the screen
 ?>
 <div class="updated"><p><strong><?php _e('Your FTP details have been saved.', 'snapshot-menu' ); ?></strong></p></div>
 <?php
     }
 
 /****************************************************
-/ SNAPSHOT ADMIN AREA
+/ SNAPSHOT HOME AREA
 /****************************************************/
-// Header
+// HEADER
+// grab some functions
+// @since 2.0
+include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+snapshot_header('Welcome to Snapshot Backup');
 ?>
-<div class="wrap">
-<h2><?php echo '<img src="'. plugins_url('images/WP-Guru-Logo.png', __FILE__) .'">'; ?>&nbsp;Welcome to Snapshot Backup!</h2>
 <table class="snapshot-backup" width=600 cellspacing=10 bgcolor=red>
 <tr><td>
 <p><strong>With this plugin you can create an up-to-the-minute archive of your entire website and save it to an offsite location via FTP.</strong></p>
@@ -157,30 +230,11 @@ function snapshot() {
 <?php
 
  if( isset($_POST[ $hidden_field_name2 ]) && $_POST[ $hidden_field_name2 ] == 'Y' ) {
-/*
- * @since 1.0
- * MAIN SNAPSHOT BUTTON
- */
-// set the number of seconds you'd like to wait for the script here
-// default is 300 
-set_time_limit(300);
 
-// create global file name
-$filetime = date('Ymd-Gi');
-// call pre-flight checklist
-include plugin_dir_path(__FILE__).'includes/preflight.php';
-// readout the Database
-include plugin_dir_path(__FILE__).'includes/database.php';
-// create ZIP package
-include plugin_dir_path(__FILE__).'includes/zipshot.php';
-// send package to FTP
-include plugin_dir_path(__FILE__).'includes/sendaway.php';
-// we're done
-echo '<div class="updated"><h2>All done - thank you for using Snapshot Backup!</h2>';
-?>
-</div>
-<?php
-}
+// call main snapshot function 
+do_the_snapshot();
+
+} // end if
 
 ?>
 
@@ -192,20 +246,88 @@ echo '<div class="updated"><h2>All done - thank you for using Snapshot Backup!</
 </form>
 <hr />
 
-<?php
+<p>
+  <?php
 // call Recent Download option
 if (get_option('snapshot_latest')){
 include plugin_dir_path(__FILE__).'includes/download-recent.php';
 }
 // call FTP Details form
-include plugin_dir_path(__FILE__).'includes/ftp-form.php';
+// include plugin_dir_path(__FILE__).'includes/ftp-form.php';
 
 // call Backup Settings
-include plugin_dir_path(__FILE__).'includes/settings.php';
+// include plugin_dir_path(__FILE__).'includes/settings.php';
 
 // call footer
 snapshot_footer();
 
-// end of Plugin
-}
+
+} // end of function snapshot_home
+
+////////////////////
+// MANAGE SNAPSHOTS
+////////////////////
+function snapshot_manage_repo(){
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+
+	snapshot_header('Manage Snapshots');
+	include plugin_dir_path(__FILE__).'includes/check-repo.php';
+	
+snapshot_footer();
+} // end of function manage_repo
+
+//////////////////////
+// FTP DETAILS PAGE
+/////////////////////
+function snapshot_ftp_details(){
+	// grab functions
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+	// call header
+	snapshot_header ('FTP Details');
+    // call FTP Details form
+    include plugin_dir_path(__FILE__).'includes/ftp-form.php';
+    // call Backup Settings
+    // include plugin_dir_path(__FILE__).'includes/settings.php';
+    // call footer
+    snapshot_footer();
+} // end of function snapshot_ftp_details
+
+///////////////////////////
+// SETUP AUTOMATION PAGE
+//////////////////////////
+function snapshot_automation(){
+	
+	include plugin_dir_path(__FILE__).'includes/automation.php';
+	
+} // end of function snapshot_automation
+
+/////////////////////////
+// HELP and CODEX PAGE
+////////////////////////
+function snapshot_codex(){
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+	echo "CODEX - Help and Documentation";
+	?>
+    </p>
+    <br />
+    better use this: <a href="http://justintadlock.com/archives/2011/06/02/adding-contextual-help-to-plugin-and-theme-admin-pages">http://justintadlock.com/archives/2011/06/02/adding-contextual-help-to-plugin-and-theme-admin-pages</a>
+<?php
+// call footer
+snapshot_footer();
+} // end of function snapshot_codex
+
+/////////////////////////////////////
+// DEV SECTION (for me to play with)
+/////////////////////////////////////
+
+function dev_section() {
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+	include plugin_dir_path( __FILE__ ) . 'includes/test-ftp.php';
+	snapshot_header('Testing Testing');
+	echo "DEV SECTION - testing stuff<br />";
+	
+	$result = snapshot_sendmail();
+	echo $result;
+	
+} // end of function dev_section
 ?>
