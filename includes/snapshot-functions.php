@@ -8,10 +8,10 @@
 
 // DISPLAY HEADER
 // @since 2.0
-function snapshot_header($headline, $content){
+function snapshot_header($headline){
 echo '<img src="'.plugin_dir_url( __FILE__ ).'../images/Snapshot-Header.png'.'"><br />';
 echo '<div class="wrap"><h2>';
-echo ' ' . $headline. '</h2><p>'.$content.'</p>';
+echo ' ' . $headline. '</h2>';
 }
 
 // DISPLAY FOOTER
