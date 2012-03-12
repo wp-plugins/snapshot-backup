@@ -8,6 +8,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) exit();
 
 // delete all options
     delete_option ('snapshot_ftp_host');
+    delete_option ('snapshot_ftp_port');
     delete_option ('snapshot_ftp_user');
     delete_option ('snapshot_ftp_pass');
     delete_option ('snapshot_ftp_subdir');

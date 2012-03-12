@@ -4,7 +4,7 @@ Contributors: versluis
 Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
-Tested up to: 3.2.1
+Tested up to: 3.3.1
 Stable tag: 2.0.2
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
@@ -21,7 +21,7 @@ If you don't have an FTP account you can download the file from your local serve
 
 1. Upload the entire folder `snapshot-backup` to the `/wp-content/plugins/` directory. Please do not rename this folder.
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Enter your FTP details under Dashboard - Snapshop Backup
+1. Enter your FTP details under Dashboard - Snapshot Backup
 1. Hit the CREATE BACKUP button, grab a coffee and enjoy piece of mind
 
 FTP Details are optional - if you don't have an FTP account you can leave the details blank and download your snapshot file manually.
@@ -34,7 +34,7 @@ Other solutions mirror your or snyc your installation. This is a great idea too,
 
 == Upgrade Notice ==
 
-If you're upgrading from Version 1.0, please note that the databsae temp files were accidentally daved in your WP root directory. Have a look for rougue .sql files there - feel free to delete them.
+If you're upgrading from Version 1.0, please note that the database temp files were accidentally saved in your WP root directory. Have a look for rougue .sql files there - feel free to delete them.
 
 == Frequently Asked Questions ==
 
@@ -48,7 +48,7 @@ This happens on older Firefox browsers, since Firefox 5 I haven't seen this prob
 
 = What's required server side for this plugin to run? =
 
-Since I'm using shell commands to create the archive file, this Plugin only works on Linux servers - NOT on Windows servers.
+Since I'm using shell commands to create the archive file, this Plugin only works only on Linux servers - NOT on Windows servers.
 
 = Does this Plugin run on Windows Servers? =
 
@@ -59,11 +59,15 @@ I'm afraid not - you have to be on a Linux server for this to work. I've develop
 Absolutely - there's a handy download link at the end of the backup procedure so you can save your file locally.
 Simply ignore all error messages relating to FTP uploads.
 
+= Are there any plans to integrate storage options other than FTP? =
+
+Yes indeed, I'm planning to add support for cloud based services such as Dropbox and Amazon S3 in the near future. Watch this space!
+
 = Can I do these backups automatically, say via a Cron Job or WP Cron? =
 
 Yes you can! Since Version 2.0 of the plugin you can create regular automatic backups under Snapshot Backup - Automation.
 
-Please note that this feature relies on the WP Cron function, which means you need traffic to 
+Please note that this feature relies on the WP Cron function, which means you need traffic to trigger this function. If you want to help this along you can call your WordPress index.php file using a standard cron job at regular intervals. 
 
 = How to I restore a snapshot? =
 
@@ -85,15 +89,25 @@ http://wpguru.co.uk/2011/04/how-to-restore-your-snapsnot-via-ftp/
 
 == Changelog ==
 
+= 2.1 =
+Removed horrible red box from main screen
+Added support for custom FTP Port
+Improved security: core files can no longer be called directly (thanks to Ed from ati-pro.com)
+Fixed bug that spawned automation processes even when deactivated
+Test FTP Button now saves as well as tests settings
+SFTP option?
+Test 0 kB SQL file?
+Nonces in forms?
+
 = 2.0.2 =
 Fixed error message related to header function
 
 = 2.0.1 =
-Some files for the 2.0 reiease hadn't copied to the WordPress repository... my mistake, issue has ben fixed.
+Some files for the 2.0 release hadn't copied to the WordPress repository.
 
 = 2.0 =
 New Menu Structure
-Added Autiomation
+Added Automation
 Added Auto Delete function for rolling backups
 Added Manage Snapshots feature to display a list of your Snapshots
 

@@ -1,9 +1,23 @@
  <?php
  
-function cockbollocks() {
-	$trouble = "Hello";
-	return $trouble;
+// Direct calls to this file are Forbidden when core files are not present
+// Thanks to Ed from ait-pro.com for this  code 
+// @since 2.1
+
+if ( !function_exists('add_action') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
 }
+
+if ( !current_user_can('manage_options') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+// 
+//
 
 function snapshot_test_ftp() {
 
@@ -16,11 +30,16 @@ $subdir = get_option('snapshot_ftp_subdir');
 $remotefile = $subdir . '/' . $filename;
 
 // @since 2.0
-// chkecing FTP Details
-// this is a re-write of the Prefilght Checks
-
-// connect to host
+// checking FTP Details
+// extra security @since 2.1
+// If in WP Dashboard or Admin Panels
+if ( is_admin() ) {
+// If user has WP manage options permissions
+if ( current_user_can('manage_options')) {
+// connect to host ONLY if the 2 security conditions are valid / met
 $conn = ftp_connect($host);
+}
+}
 
 if (!$conn)
 {

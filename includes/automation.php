@@ -1,4 +1,23 @@
 <?php
+
+// Direct calls to this file are Forbidden when core files are not present
+// Thanks to Ed from ait-pro.com for this  code 
+// @since 2.1
+
+if ( !function_exists('add_action') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+if ( !current_user_can('manage_options') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+// 
+
 // read in values from the database
 	$opt_name7 = 'snapshot_auto_interval';
 	$opt_name8 = 'snapshot_auto_email';
@@ -40,7 +59,7 @@
 which in turn rely on your site being visited every once in a while. </p>
 <p>Live production sites with 50+ hits per day will work fine, but on fresh test sites with <br />
   blocked search engines the automation may appear unreliable (due to lack traffic) . </p>
-<p>You can help this along by using a dedicated Cron Job.</p>
+<p>You can help this along by using a dedicated Cron Job.
 
 <?php
 /*
@@ -57,8 +76,9 @@ which in turn rely on your site being visited every once in a while. </p>
  * Save this file, select your new drop-down option and you're good to go.
  */
 ?>
-    <form method="post" action="">
-    <input type="hidden" name="<?php echo $hidden_field_name4; ?>" value="Y">
+</p>
+<form method="post" action="">
+  <input type="hidden" name="<?php echo $hidden_field_name4; ?>" value="Y">
     <label><strong>How often would you like to create backups?</strong> 
     <select name="<?php echo $data_field_name7; ?>">
     <option value="never" <?php if ($opt_val7 == "never") echo 'selected'; ?>>I don't want to use automation </option>

@@ -1,3 +1,24 @@
+<?php 
+// Direct calls to this file are Forbidden when core files are not present
+// Thanks to Ed from ait-pro.com for this  code 
+// @since 2.1
+
+if ( !function_exists('add_action') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+if ( !current_user_can('manage_options') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+// 
+//
+?>
+
 <h2>Include Additional Directory </h2>
 <p>You can include the full path to another directory in your Snapshots if you wish. </p>
 <p>This option is useful if you have moved your wp-content folder to a location other than the default 

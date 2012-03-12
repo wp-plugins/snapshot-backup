@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 2.0.2
+Version: 2.1 Beta
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
-Copyright 2011 by Jay Versluis (email : versluis2000@yahoo.com)
+Copyright 2011-2012 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 2.0.2 as of 15/07/2011
+This is Version 2.1 Beta 1 as of 11/03/2012
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // @since 2.0
 // ***********************
 
-add_action('snapshot_automation', 'snapshot_do_cron');
+    add_action('snapshot_automation', 'snapshot_do_cron');
 
 function snapshot_auto_activation() {
 	if ( !wp_next_scheduled( 'snapshot_automation' ) ) {
@@ -55,7 +55,11 @@ function snapshot_add_interval( $schedules ) {
 	return $schedules;
 }
 
+/* let's only do this if the user wants to use automation */
+
+if (get_option('snapshot_auto_interval') != 'never'){
 add_filter( 'cron_schedules', 'snapshot_add_interval' );
+}
 
 // ************************************************************
 // SNAPSHOT CRON FUNCTION
@@ -103,7 +107,7 @@ add_submenu_page('snapshot', 'Automation', 'Automation', 'administrator', 'snaps
 // Add a submenu to the custom top-level menu: HELP
 // add_submenu_page('snapshot', 'Help and Documentation', 'Help and Documentation', 'administrator', 'snapshot-help', 'snapshot_codex');
 // Add a submenu to the custom top-level menu: DEV
-// add_submenu_page('snapshot', 'DEV SECTION', 'DEV SECTION', 'administrator', 'dev-section', 'dev_section');
+add_submenu_page('snapshot', 'DEV SECTION', 'DEV SECTION', 'administrator', 'dev-section', 'dev_section');
 }
 
 // Auto populate new option - in case it's empty
@@ -114,11 +118,24 @@ if (!get_option('snapshot_repo_amount')) {
 // displays the page content for the admin submenu
 function snapshot_home() {
 
-//must check that the user has the required capability 
-    if (!current_user_can('manage_options'))
-    {
-      wp_die( __('You do not have sufficient permissions to access this page.') );
-    }
+// Direct calls to this file are Forbidden when core files are not present
+// Thanks to Ed from ati-pro.com for this  code 
+// @since 2.1
+
+if ( !function_exists('add_action') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+if ( !current_user_can('manage_options') ){
+header('Status: 403 Forbidden');
+header('HTTP/1.1 403 Forbidden');
+exit();
+}
+
+// 
+//
 
     // variables for the field and option names 
     $opt_name = 'snapshot_ftp_host';
@@ -215,11 +232,12 @@ function snapshot_home() {
 include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
 snapshot_header('Welcome to Snapshot Backup');
 ?>
-<table class="snapshot-backup" width=600 cellspacing=10 bgcolor=red>
+<table class="snapshot-backup" width=600 cellspacing=10>
 <tr><td>
-<p><strong>With this plugin you can create an up-to-the-minute archive of your entire website and save it to an offsite location via FTP.</strong></p>
+<p><strong>With this plugin you can create an  archive of your entire website and save it to an offsite location.</strong></p>
 <p>Things couldn't be easier: </p>
-<ul><li>&nbsp;&nbsp;&bull; enter your FTP details at the bottom</li>
+<ul>
+<li>&nbsp;&nbsp;&bull; enter your FTP details under Settings</li>
 <li>&nbsp;&nbsp;&bull; click on CREATE NEW SNAPSHOT</li>
 <li>&nbsp;&nbsp;&bull; rest assured you've backed your database AND contents with just one single click</li></ul>
 <p>If you don't have an FTP account you can <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">sign up for one here</a> or download your snapshot from this server once it's done.</p>
@@ -325,9 +343,11 @@ function dev_section() {
 	include plugin_dir_path( __FILE__ ) . 'includes/test-ftp.php';
 	snapshot_header('Testing Testing');
 	echo "DEV SECTION - testing stuff<br />";
-	
-	$result = snapshot_sendmail();
-	echo $result;
+        
+        echo "Let's look into Automation<br><br>";
+echo (get_option('snapshot_auto_interval'));
+
+echo "<br><br> the end";
 	
 } // end of function dev_section
 ?>
