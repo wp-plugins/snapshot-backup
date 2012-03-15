@@ -101,6 +101,10 @@ Added cute Menu Icon (thanks to Dirceau from fasticon.com)
 Fixed empty database bug
 Added Database File Size in status messages
 
+===============
+TESTING
+===============
+
 
 NOTES TO SELF:
 Before catching up for breakfast, here's what I'd like to do before going live:
