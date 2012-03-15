@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 2.1 Beta 3
+Version: 2.1
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011-2012 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 2.1 Beta 3 as of 13/03/2012
+This is Version 2.1 as of 14/03/2012, one day before iPad 3 releaes
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -76,8 +76,7 @@ function snapshot_do_cron() {
 
 	} // end if email
     // } // end if do snapshot
-	// just for testing
-	// wp_mail( 'jay@versluis.com', 'Ninja Reminder', 'Don\'t fall asleep! Get Snapshot Backup working!' );
+	
 } // end of function
 
 // cueue automation whenever WordPress loads
@@ -132,15 +131,15 @@ function snapshot_admin() {
 // @since 2.0
 add_menu_page('Snapshot Backup', 'Snapshot Backup', 'administrator', 'snapshot', 'snapshot_home', plugin_dir_url( __FILE__ ). 'images/snapshot-icon.png');
 // Add a submenu to the custom top-level menu: MANAGE
-add_submenu_page('snapshot', 'Manage Snapshots', 'Manage Snapshots', 'administrator', 'manage-repo', 'snapshot_manage_repo');
+add_submenu_page('snapshot', 'List Snapshots', 'List Snapshots', 'administrator', 'manage-repo', 'snapshot_manage_repo');
 // Add a submenu to the custom top-level menu: FTP DETAILS
-add_submenu_page('snapshot', 'Settings', 'Settings', 'administrator', 'snapshot-ftp-details', 'snapshot_ftp_details');
+add_submenu_page('snapshot', 'FTP Settings', 'FTP Settings', 'administrator', 'snapshot-ftp-details', 'snapshot_ftp_details');
 // Add a submenu to the custom top-level menu: AUTOMATION
 add_submenu_page('snapshot', 'Automation', 'Automation', 'administrator', 'snapshot-automation', 'snapshot_automation');
 // Add a submenu to the custom top-level menu: HELP
 // add_submenu_page('snapshot', 'Help and Documentation', 'Help and Documentation', 'administrator', 'snapshot-help', 'snapshot_codex');
 // Add a submenu to the custom top-level menu: DEV
-add_submenu_page('snapshot', 'DEV SECTION', 'DEV SECTION', 'administrator', 'dev-section', 'dev_section');
+// add_submenu_page('snapshot', 'DEV SECTION', 'DEV SECTION', 'administrator', 'dev-section', 'dev_section');
 }
 
 // Auto populate new option - in case it's empty
@@ -273,7 +272,7 @@ snapshot_header('Welcome to Snapshot Backup');
 <p>If you don't have an FTP account you can <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">sign up for one here</a> or download your snapshot from this server once it's done.</p>
 </td></tr>
 </table>
-<p>Any questions? Check out the included <?php echo '<a href="' . plugins_url('readme.txt', __FILE__) .'"'; ?>" target="_blank">readme file</a> or visit the <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Snapshot Backup Website</a>. Have fun!</p>
+<p>Any questions? Check out the included <?php echo '<a href="' . plugins_url('readme.txt', __FILE__) .'"'; ?>" target="_blank">readme file</a> or visit the <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Snapshot Backup Website</a>. Have fun!
 
 <?php
 
@@ -285,9 +284,9 @@ do_the_snapshot();
 } // end if
 
 ?>
-
+</p>
 <form name="form2" method="post" action="">
-<input type="hidden" name="<?php echo $hidden_field_name2; ?>" value="Y">
+  <input type="hidden" name="<?php echo $hidden_field_name2; ?>" value="Y">
 <p class="submit">
 <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Create New Snapshot') ?>" />
 </p>
