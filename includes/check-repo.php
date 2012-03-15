@@ -64,10 +64,11 @@ echo '<li>' . substr($value, (strlen($subdir))) . '</li>';
 </ol>
 <p><br />
   <em>This section shows a list of Snapshots in your repository. </em></p>
-<p><em>If you're using the Auto-Delete option under Autiomation: the files at the bottom of this list will be deleted. </em><br />
-<em>I'll add more functions here in future versions of the Plugin.</em></p>
-
-<?php
+<p><em>If you're using the Auto-Delete option under Automation: <br />
+</em><em>the files at the bottom of this list will be deleted, the ones at the top will stay in place. </em>
+  
+  <?php
 // echo "<br />";
 ftp_close($conn_id);
 ?>
+</p>

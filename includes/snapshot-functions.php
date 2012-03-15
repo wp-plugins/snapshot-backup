@@ -38,10 +38,12 @@ echo ' ' . $headline. '</h2>';
 function snapshot_footer(){
     ?>
 	<br /><hr />
-    <p><strong>Coming soon: Translations, repository browser and Snapshot Restore option. Stay tuned! </strong></p>
-    <p>This plugin was brought to you by<br />
-    <a href="http://wpguru.co.uk" target="_blank"><?php echo '<img src="'. plugin_dir_url(__FILE__).'../images/WP-Guru-Header.png'.'">'; ?></a></p>
-    <p>Thank you for using <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Snapshot Backup</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a></p>
+
+<p>This plugin was brought to you by<br />
+    <a href="http://wpguru.co.uk" target="_blank"><?php echo '<img src="'. plugin_dir_url(__FILE__).'../images/WP-Guru-Header2.png'.'">'; ?></a></p>
+    <p>Thank you for using <a href="http://wpguru.co.uk/2011/02/snapshot-backup/" target="_blank">Snapshot Backup</a> | <a href="http://wpguru.co.uk/hosting/ftp/" target="_blank">Get an FTP Account</a> | <a href="http://wpguru.co.uk/say-thanks/" target="_blank">Buy me a Coffee</a>
+    <br>
+    Signup for the <a href="http://eepurl.com/j1Hzj" target="_blank">Snapshot Backup Newsletter</a> | <a href="http://wpguru.co.uk/2012/03/snashot-backup-2-1/" target="_blank">Release Notes</a> for this version</p>
     <?php 
 	} // end of function snapshot_footer
 

@@ -5,7 +5,7 @@ Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
 Tested up to: 3.3.1
-Stable tag: 2.0.2
+Stable tag: 2.1
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
@@ -100,37 +100,6 @@ Fixed leading slash display bug in Manage Snapshots menu
 Added cute Menu Icon (thanks to Dirceau from fasticon.com)
 Fixed empty database bug
 Added Database File Size in status messages
-
-===============
-TESTING
-===============
-
-
-NOTES TO SELF:
-Before catching up for breakfast, here's what I'd like to do before going live:
-
-- add help section
-- create links for help section
-- tweak links
-- add newsletter signup
-- under manage snapshots, add option to delete latest x files (i.e. only leave x files)
-- leading slash under manage snapshots - sometimes it shows, sometimes it doesn't
-- change bottom footer graphic (smaller, maybe remove top graphic)
-- before going live, remove DEV section
-- must fix auto delete but... what's going on there?
-
-*****
-
-SSH Option via PHP's ssh2 command
-SFTP option?
-Nonces in forms?
-download .SQL seperately
-
-For next version:
-- choice of storage engine
-- choice of MySQL readout
-- choice of storage repo (Amazon, Dropbox, SSH)
-
 
 = 2.0.2 =
 Fixed error message related to header function
