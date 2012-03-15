@@ -43,6 +43,21 @@ exit();
     update_option( $opt_name7, $opt_val7 );
     update_option( $opt_name8, $opt_val8 );
 	update_option( $opt_name9, $opt_val9 );
+	
+	// if the option is enabled and not already scheduled lets schedule it
+	if ( get_option('snapshot_auto_interval') != 'never' && !wp_next_scheduled( 'snapshot_automation' ) ) {
+	
+		//schedule the event to run at interval
+		// >> same trick as activation in main file <<
+		wp_schedule_event( time(), 'snapshot_interval', 'snapshot_automation' );
+	// if the option is NOT enabled and scheduled lets unschedule it
+	} elseif ( $snapshot_auto_interval == 'never' && wp_next_scheduled( 'snapshot_automation' ) ) {	
+		//get time of next scheduled run
+		$timestamp = wp_next_scheduled( 'snapshot_automation' );
+		//unschedule custom action hook
+		wp_unschedule_event( $timestamp, 'snapshot_automation' );
+	} // end if
+	
 	// Put a "settings updated" message on the screen
 ?>
 <div class="updated"><p><strong><?php _e('Your automation settings have been saved.', 'snapshot-automation' ); ?></strong></p></div>
@@ -88,8 +103,9 @@ which in turn rely on your site being visited every once in a while. </p>
     <option value="604800" <?php if ($opt_val7 == "604800") echo 'selected'; ?>>once every week</option>
     <option value="1209600" <?php if ($opt_val7 == "1209600") echo 'selected'; ?>>once every two weeks</option>
     <option value="120" <?php if ($opt_val7 == "120") echo 'selected'; ?>>every two minutes (good for testing)</option>
-    <option value="600" <?php if ($opt_val7 == "600") echo 'selected'; ?>>every ten minutes (good for testing)</option>
-        
+    <!--
+    <option value="600" <?php // if ($opt_val7 == "600") echo 'selected'; ?>>every ten minutes (good for testing)</option>
+        -->
     </select>
     </label>
     <p><input type="submit" name="button" id="button" class="button-primary" value="Save Automation Settings" /></p>
@@ -104,8 +120,8 @@ which in turn rely on your site being visited every once in a while. </p>
 <p>
   <input type="text" size="2" name="<?php echo $data_field_name9; ?>" value="<?php echo $opt_val9; ?>">
 </p>
-<p><em>Defaults to 10 if empty.</em></p>
-    <p><input type="submit" name="button" id="button" class="button-primary" value="Save Automation Settings" /></p>
+<p><em>Defaults to 10 if empty. Set to anything over 100 to disable this feature.</em></p>
+    <p><input type="submit" name="button" id="button" class="button-primary" value="Save Auto-Delete Options" /></p>
   <br />
 <hr />
   <br />
@@ -118,7 +134,7 @@ which in turn rely on your site being visited every once in a while. </p>
 
 <p><em>Leave blank if you don't want to use this feature.</em></p>
 
-    <p><input type="submit" name="button" id="button" class="button-primary" value="Save Automation Settings" /></p>
+    <p><input type="submit" name="button" id="button" class="button-primary" value="Save Email" /></p>
 
 </form>
 <?php

@@ -30,6 +30,9 @@ $host = get_option('snapshot_ftp_host');
 $user = get_option('snapshot_ftp_user');
 $pass = get_option('snapshot_ftp_pass');
 $subdir = get_option('snapshot_ftp_subdir');
+if ($subdir =='') {
+	$subdir = '/';
+}
 
 // extra security
 // @since 2.1
@@ -46,6 +49,7 @@ $conn_id = ftp_connect($host);
 $login_result = ftp_login($conn_id, $user, $pass);
 
 // get contents of the current directory
+// $contents = ftp_rawlist($conn_id, "$subdir/*.tar", '-1t');
 $contents = ftp_nlist($conn_id, "$subdir/*.tar");
 
 // output $contents
@@ -58,13 +62,12 @@ echo '<li>' . substr($value, (strlen($subdir))) . '</li>';
 }
 ?>
 </ol>
-<br />
-<em>This section helps you keep track of your backups. </em><br />
-<em>I'll add more functions here in future versions of the Plugin.</em>
+<p><br />
+  <em>This section shows a list of Snapshots in your repository. </em></p>
+<p><em>If you're using the Auto-Delete option under Autiomation: the files at the bottom of this list will be deleted. </em><br />
+<em>I'll add more functions here in future versions of the Plugin.</em></p>
 
 <?php
-echo "<br />";
-
-
+// echo "<br />";
 ftp_close($conn_id);
 ?>

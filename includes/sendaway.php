@@ -3,7 +3,8 @@
 // Direct calls to this file are Forbidden when core files are not present
 // Thanks to Ed from ait-pro.com for this  code 
 // @since 2.1
-
+// doesn't work when file is included by script :-(
+/*
 if ( !function_exists('add_action') ){
 header('Status: 403 Forbidden');
 header('HTTP/1.1 403 Forbidden');
@@ -15,7 +16,7 @@ header('Status: 403 Forbidden');
 header('HTTP/1.1 403 Forbidden');
 exit();
 }
-
+*/
 // 
 //
 echo "<h2>Send package to FTP site</h2>";
@@ -36,14 +37,15 @@ $port = get_option('snapshot_ftp_port');
 }
 // extra security
 // @since 2.1
+// doesn't work when file is included by script :-(
 // If in WP Dashboard or Admin Panels
-if ( is_admin() ) {
+// if ( is_admin() ) {
 // If user has WP manage options permissions
-if ( current_user_can('manage_options')) {
+// if ( current_user_can('manage_options')) {
 // connect to host ONLY if the 2 security conditions are valid / met
 $conn = ftp_connect($host,$port);
-}
-}
+// }
+// }
 
 // @since 1.6
 // new passive FTP connection to avoid timeouts

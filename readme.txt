@@ -92,12 +92,41 @@ http://wpguru.co.uk/2011/04/how-to-restore-your-snapsnot-via-ftp/
 = 2.1 =
 Removed horrible red box from main screen
 Added support for custom FTP Port
-Improved security: core files can no longer be called directly (thanks to Ed from ati-pro.com)
+Improved security: core files can no longer be called directly (thanks to Ed from ait-pro.com)
 Fixed bug that spawned automation processes even when deactivated
 Test FTP Button now saves as well as tests settings
+Blank sub-directory no longer gives error message
+Fixed leading slash display bug in Manage Snapshots menu
+Added cute Menu Icon (thanks to Dirceau from fasticon.com)
+Fixed empty database bug
+Added Database File Size in status messages
+
+
+NOTES TO SELF:
+Before catching up for breakfast, here's what I'd like to do before going live:
+
+- add help section
+- create links for help section
+- tweak links
+- add newsletter signup
+- under manage snapshots, add option to delete latest x files (i.e. only leave x files)
+- leading slash under manage snapshots - sometimes it shows, sometimes it doesn't
+- change bottom footer graphic (smaller, maybe remove top graphic)
+- before going live, remove DEV section
+- must fix auto delete but... what's going on there?
+
+*****
+
+SSH Option via PHP's ssh2 command
 SFTP option?
-Test 0 kB SQL file?
 Nonces in forms?
+download .SQL seperately
+
+For next version:
+- choice of storage engine
+- choice of MySQL readout
+- choice of storage repo (Amazon, Dropbox, SSH)
+
 
 = 2.0.2 =
 Fixed error message related to header function

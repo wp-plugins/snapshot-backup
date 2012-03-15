@@ -27,6 +27,9 @@ $host = get_option('snapshot_ftp_host');
 $user = get_option('snapshot_ftp_user');
 $pass = get_option('snapshot_ftp_pass');
 $subdir = get_option('snapshot_ftp_subdir');
+if ($subdir =='') {
+	$subdir = '/';
+}
 $remotefile = $subdir . '/' . $filename;
 
 // @since 2.0

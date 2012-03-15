@@ -2,7 +2,8 @@
 // Direct calls to this file are Forbidden when core files are not present
 // Thanks to Ed from ait-pro.com for this  code 
 // @since 2.1
-
+// doesn't work when file is included by script :-(
+/* 
 if ( !function_exists('add_action') ){
 header('Status: 403 Forbidden');
 header('HTTP/1.1 403 Forbidden');
@@ -14,7 +15,7 @@ header('Status: 403 Forbidden');
 header('HTTP/1.1 403 Forbidden');
 exit();
 }
-
+*/ 
 // 
 //
 // FUNCTIONS GALORE
@@ -51,12 +52,14 @@ function snapshot_footer(){
  *
  *************************/
 function do_the_snapshot() {
+    
 // set the number of seconds you'd like to wait for the script here
 // default is 300 
 set_time_limit(300);
 
 // create global file name
 $filetime = date('Ymd-Gi');
+
 // call pre-flight checklist
 include plugin_dir_path(__FILE__).'preflight.php';
 // readout the Database
@@ -110,6 +113,7 @@ function snapshot_autodelete() {
     $subdir = get_option('snapshot_ftp_subdir');
 	
 	// set up basic connection
+	// SECURE THIS GODAMMIT
     $conn_id = ftp_connect($host);
 
     // login with username and password

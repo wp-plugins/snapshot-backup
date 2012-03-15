@@ -4,13 +4,13 @@ Plugin Name: Snapshot Backup
 Plugin URI: http://wpguru.co.uk/2011/02/snapshot-backup/
 Description: Backs up your ENTIRE Wordpress site and sends it to an FTP archive. Excellent!
 Author: Jay Versluis
-Version: 2.1 Beta
+Version: 2.1 Beta 3
 Author URI: http://wpguru.co.uk
 License: GPLv2 or later
 
 Copyright 2011-2012 by Jay Versluis (email : versluis2000@yahoo.com)
 
-This is Version 2.1 Beta 1 as of 11/03/2012
+This is Version 2.1 Beta 3 as of 13/03/2012
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -28,65 +28,98 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-// ***********************
-// AUTOMATION HOOK
-// @since 2.0
-// ***********************
+// let's start with getting some functions
+// include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
 
-    add_action('snapshot_automation', 'snapshot_do_cron');
+/*****************************/
+/* @since 2.1
+/* AUTOMATION 
+/*****************************/
+// This has been completely re-written in version 2.1
+// first we'll unschedule any cron events upon deactivation
+	register_deactivation_hook (__FILE__, 'snapshot_deactivate');
+	function snapshot_deactivate() {	
+	// find out when the last event was scheduled
+	$timestamp = wp_next_scheduled ('snapshot_automation');
+	// unschedule previous event if any
+	wp_unschedule_event ($timestamp, 'snapshot_automation');
+	}
 
+// now we'll add our cron hook
+add_action ('snapshot_automation', 'snapshot_do_cron');
+
+/* OLD:
+add_action('snapshot_automation', 'snapshot_auto_activation');
 function snapshot_auto_activation() {
 	if ( !wp_next_scheduled( 'snapshot_automation' ) ) {
 		wp_schedule_event(time(), 'snapshot_interval', 'snapshot_automation');
 	}
 }
+*/
 
+// next up is the actual function that creates the snapshot
+function snapshot_do_cron() {
+    // grab functions
+	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
+    // check if we're actually suppsed to do something
+    // if ( get_option ('snapshot_auto_interval') != 'never') {
+	// create snapshot
+	do_the_snapshot();
+    // call AUTO DELETE FEATURE if lower than 100
+	if (get_option('snapshot_repo_amount') < '101') {
+	snapshot_autodelete();
+	}
+	
+    // call SEND EMAIL NOTIFICATION
+	if ( get_option('snapshot_auto_email') !='') {
+		snapshot_sendmail();
+
+	} // end if email
+    // } // end if do snapshot
+	// just for testing
+	// wp_mail( 'jay@versluis.com', 'Ninja Reminder', 'Don\'t fall asleep! Get Snapshot Backup working!' );
+} // end of function
+
+// cueue automation whenever WordPress loads
 add_action('wp', 'snapshot_auto_activation');
 
+    // if the user wants to use automation, let's activate it here
+function snapshot_auto_activation () {	
+	
+	// if the option is enabled and not already scheduled lets schedule it
+	if ( get_option('snapshot_auto_interval') != 'never' && !wp_next_scheduled( 'snapshot_automation' ) ) {
+	
+		//schedule the event to run at interval
+		wp_schedule_event( time(), 'snapshot_interval', 'snapshot_automation' );
+		
+	// if the option is NOT enabled and scheduled lets unschedule it
+	} elseif ( $snapshot_auto_interval == 'never' && wp_next_scheduled( 'snapshot_automation' ) ) {	
+		//get time of next scheduled run
+		$timestamp = wp_next_scheduled( 'snapshot_automation' );
+		
+		//unschedule custom action hook
+		wp_unschedule_event( $timestamp, 'snapshot_automation' );
 
-/* setup different schedule */
+	} // end if
+} // end function
 
+// now let's devise our own schedule by amending the existing ones
 function snapshot_add_interval( $schedules ) {
-	// add specific schedule to the existing set
+	// let's only do this if the user wants to use automation
+	if (get_option('snapshot_auto_interval') != 'never'){
 	$schedules['snapshot_interval'] = array(
 		'interval' => get_option ('snapshot_auto_interval'),
 		'display' => __('Snapshot Backup Automation')
 	);
 	return $schedules;
+	}
 }
-
-/* let's only do this if the user wants to use automation */
-
-if (get_option('snapshot_auto_interval') != 'never'){
 add_filter( 'cron_schedules', 'snapshot_add_interval' );
-}
-
-// ************************************************************
-// SNAPSHOT CRON FUNCTION
-// @since 2.0
-// ************************************************************
-/* This is the function that is executed by the added interval  */
-function snapshot_do_cron() {
-	// grab functions
-	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
-    // check if we're actually suppsed to do something
-    if ( get_option ('snapshot_auto_interval') !== 'never') {
-	do_the_snapshot();
-
-    // call AUTO DELETE FEATURE
-	snapshot_autodelete();
-	
-    // call SEND EMAIL NOTIFICATION
-	if ( get_option('snapshot_auto_email') !=='') {
-		snapshot_sendmail();
-
-	} // end if email
-    } // end if do snapshot
-} // end of function
-
+  
 // ************************************************************
 // END OF AUTOMATION HOOK
 // ************************************************************
+
 
 // Hook for adding admin menu
 // @since 1.0
@@ -97,7 +130,7 @@ function snapshot_admin() {
 
 // Adding new top-level menu SNAPSHOT BACUP
 // @since 2.0
-add_menu_page('Snapshot Backup', 'Snapshot Backup', 'administrator', 'snapshot', 'snapshot_home');
+add_menu_page('Snapshot Backup', 'Snapshot Backup', 'administrator', 'snapshot', 'snapshot_home', plugin_dir_url( __FILE__ ). 'images/snapshot-icon.png');
 // Add a submenu to the custom top-level menu: MANAGE
 add_submenu_page('snapshot', 'Manage Snapshots', 'Manage Snapshots', 'administrator', 'manage-repo', 'snapshot_manage_repo');
 // Add a submenu to the custom top-level menu: FTP DETAILS
@@ -133,9 +166,6 @@ header('Status: 403 Forbidden');
 header('HTTP/1.1 403 Forbidden');
 exit();
 }
-
-// 
-//
 
     // variables for the field and option names 
     $opt_name = 'snapshot_ftp_host';
@@ -176,7 +206,7 @@ exit();
 	
 	// @since 1.6
 	// let's include some subroutines - doesn't work yet
-// include plugin_dir_path(__FILE__).'includes/test-ftp.php';
+include plugin_dir_path(__FILE__).'includes/test-ftp.php';
 	
 /* 
  * @since 1.5
@@ -324,11 +354,19 @@ function snapshot_automation(){
 ////////////////////////
 function snapshot_codex(){
 	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
-	echo "CODEX - Help and Documentation";
+	// call header
+	snapshot_header ('Help and Documentation');
 	?>
-    </p>
-    <br />
-    better use this: <a href="http://justintadlock.com/archives/2011/06/02/adding-contextual-help-to-plugin-and-theme-admin-pages">http://justintadlock.com/archives/2011/06/02/adding-contextual-help-to-plugin-and-theme-admin-pages</a>
+<ul>
+  <li>Newsletter Signup (need to create form)</li>
+  <li>WordPress Forum (I don't get notified)</li>
+  <li>Snapshot Homepage</li>
+  <li>Donation Link</li>
+  <li>Usage Video</li>
+  <li>FAQ re FTP Details</li>
+  <li>Link to Dev Diary (or RSS feed)</li>
+  <li>Disclaimer</li>
+  </ul>
 <?php
 // call footer
 snapshot_footer();
@@ -340,14 +378,17 @@ snapshot_footer();
 
 function dev_section() {
 	include plugin_dir_path( __FILE__ ) . 'includes/snapshot-functions.php';
-	include plugin_dir_path( __FILE__ ) . 'includes/test-ftp.php';
+	// include plugin_dir_path( __FILE__ ) . 'includes/test-ftp.php';
 	snapshot_header('Testing Testing');
 	echo "DEV SECTION - testing stuff<br />";
         
-        echo "Let's look into Automation<br><br>";
-echo (get_option('snapshot_auto_interval'));
+        echo "Let's investigate the autodelete function:<br><br>";
+snapshot_autodelete();
+
+echo '<br>';
 
 echo "<br><br> the end";
 	
 } // end of function dev_section
+
 ?>
