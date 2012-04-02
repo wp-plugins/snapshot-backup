@@ -5,7 +5,7 @@ Donate link: http://wpguru.co.uk/say-thanks/
 Tags: snapshot backup, backup, complete backup, full backup, archive wordpress, air check, ftp backup
 Requires at least: 2.7
 Tested up to: 3.3.1
-Stable tag: 2.1
+Stable tag: 2.1.1
 
 Creates a Snapshot Backup of your entire website and uploads it to an FTP repository.
 
@@ -88,6 +88,10 @@ http://wpguru.co.uk/2011/04/how-to-restore-your-snapsnot-via-ftp/
 3. Success Screen: if you see this then your backup was successful.
 
 == Changelog ==
+
+= 2.1.1 =
+Switched auto delete order: now old snapshots are deleted before a new one is written.
+Corrected spelling mistake on Archiving (thanks to Jordan and Julia for pointing this out).
 
 = 2.1 =
 Removed horrible red box from main screen

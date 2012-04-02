@@ -20,7 +20,7 @@ exit();
 // 
 //
 
-echo "<h2>Archving your website</h2>";
+echo "<h2>Archiving your website</h2>";
 echo "This could take another moment...<br />";
 $savepath = WP_CONTENT_DIR . '/uploads/';
 
